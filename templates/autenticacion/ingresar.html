@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}Ingresar{% endblock %}
+
+{% block content %}
+<h1>Iniciar seción</h1>
+<form method="POST">
+    {%csrf_token %}
+    {{form.as_p}}
+    <button type="submit">Ingresar</button>
+
+</form>
+
+{%endblock%}

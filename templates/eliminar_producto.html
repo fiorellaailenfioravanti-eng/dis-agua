@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %} Eliminar {% endblock%}
+
+
+{% block content %}
+<h2>ELIMINACION DEL EVENTO ❌</h2>
+<br>
+<p>¿Estás seguro de eliminar el evento "{{ evento.titulo }}"?</p>
+<p><strong>Organizado por</strong> {{ evento.organizador }} <strong>sobre</strong> {{ evento.descripcion }}</p>
+<p><strong> ⚠️ Si lo haces, no podrás recuperarlo.</strong></p>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <button type="submit">Eliminar</button>
+</form>
+{% endblock%}

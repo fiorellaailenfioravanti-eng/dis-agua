@@ -1,12 +1,27 @@
-<!DOCTYPE html>
-<html lang="es-AR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio</title>
-</head>
-<body>
-    <h1>¡Todos los productos!</h1>
-    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium sunt sit reprehenderit blanditiis rerum modi ab, sed accusamus maxime nam harum, dicta obcaecati rem quia corporis soluta, corrupti esse cupiditate?.</p>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Listado de Productos{% endblock %}
+{% block content %}
+    <h1>Listado de Productos</h1>
+
+        <div>
+            <h2>Categorías</h2>
+            <ul>
+                <li>
+                    <a href="{% url 'apps.productos:listar_productos' %}">Todas las categorías</a>
+                </li>
+                {% for e in categorias %}
+              
+                <li>{{ e.nombre }}  </li>
+                
+                {% endfor %}
+            </ul>
+        </div>
+        {% for e in productos %}
+        <hr>
+        <h2>{{ e.nombre }}</h2>
+        <p><strong>Precio:</strong> ${{ e.precio }}</p>
+        <a href="{% url 'apps.productos:ver_producto' e.pk %}">Ver detalles</a>
+        {% empty %}
+        <p>No hay productos disponibles.</p>
+        {% endfor %}
+{% endblock %}

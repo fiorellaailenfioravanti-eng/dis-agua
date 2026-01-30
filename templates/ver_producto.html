@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Ver Producto{% endblock %}
+{% block content %}
+    <h1>Detalles del Producto</h1>
+        {%if producto %}
+        <ul>
+            <li><a href="{% url 'apps.productos:listar_productos' %}">Volver</a></li>
+            <li><a href="{% url 'apps.productos:editar_producto' producto.pk %}">Editar</a></li>
+            <li><a href="{% url 'apps.productos:eliminar_producto' producto.pk %}">Eliminar</a></li>
+        </ul>
+        <hr>
+        <h2>{{ producto.nombre }}</h2>
+        <p><strong>Descripción:</strong> {{ producto.descripcion }}</p> 
+        <p><strong>Precio:</strong> ${{ producto.precio }}</p>
+        <p><strong>Categorías:</strong> 
+        {% for cat in producto.categoria.all %}
+        {{ cat.nombre }}{% if not forloop.last %}, {% endif %}
+        {% empty %}
+        Sin categoría asignada
+        {% endfor %}
+        </p>
+        <p><strong>Cantidad en stock:</strong> {{ producto.stock }}</p>
+        <p><strong>Imagen:</strong> {% if producto.imagen %} <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" style="max-width: 200px;"> {% else %} No tiene imagen {% endif %} </p>
+        
+        {%else%}
+        <hr>
+        <p>Producto no encontrado.</p>
+        {%endif%}
+
+{% endblock %}

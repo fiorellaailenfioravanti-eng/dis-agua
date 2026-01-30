@@ -1,0 +1,58 @@
+{% load grupos %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <!--aqui arriba podria ir un logo o imagen -->
+        <nav>
+            <hr>
+            <ul>
+             
+            {% if user.is_staff %}
+                <li><a href="{% url 'admin:index' %}">Admin</a></li>
+            {% endif %}
+
+            <li><a href="{% url 'inicio' %}">Inicio</a></li>
+            <li><a href="{% url 'apps.productos:listar_productos' %}">Productos</a></li>
+
+
+            <!--permisos por grupos desde el frontend--> 
+            {%if user|has_group:"Vendedor" %}
+            <li><a href="{% url 'apps.productos:crear_producto'%}">Crear Productos</a></li>
+            {% endif %}
+            
+            {% if user.is_authenticated %}
+                <li style="display:flex; align-items:center; gap:8px;">
+                <img src="{{ user.imagen_perfil.url }}"
+                    style="width:32px; height:32px; border-radius:50%; object-fit:cover;">
+                <span>Hola, {{ user.username }}</span>
+                </li>
+                <li><a href="{% url 'apps.autenticacion:cerrar_sesion' %}">Cerrar Sesión</a></li>
+            {%else %}
+            <li><a href="{% url 'apps.autenticacion:registrar' %}">Registrar Usuario</a></li>
+            <li><a href="{% url 'apps.autenticacion:ingresar' %}">Iniciar Sesion</a></li>
+            {% endif %}
+            <!--<li><a href="">Servicios</a></li>
+            <li><a href=" ">Contacto</a></li> -->
+            </ul>
+            <hr>
+        </nav>
+    </header>
+    
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <hr>
+        <p>&copy; 2025 My Website</p>
+    </footer>
+</body>
+</html>
