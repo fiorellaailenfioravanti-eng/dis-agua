@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import listar_productos, crear_producto, ver_producto, editar_producto, eliminar_producto
+from .views import listar_productos, crear_producto, ver_producto, editar_producto, eliminar_producto, crear_categoria
 
 app_name = 'apps.productos'
 urlpatterns = [
@@ -7,6 +7,7 @@ urlpatterns = [
     # CRUD
     # C = Crear producto 
     path('crear/', crear_producto, name='crear_producto'),
+    path('categoria/crear/', crear_categoria, name='crear_categoria'),
 
     # R = Leer productos
     path('', listar_productos, name='listar_productos'),

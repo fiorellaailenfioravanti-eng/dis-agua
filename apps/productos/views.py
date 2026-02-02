@@ -1,18 +1,15 @@
-from django.shortcuts import render
 from .models import Producto, Categoria
-from .forms import ProductoForm
-from django.shortcuts import redirect
+from .forms import ProductoForm, CategoriaForm
 #Decoradores para permisos (opcional)
 
 #para añadir permisos desde el backend
 from django.contrib.auth.decorators import user_passes_test, login_required
 from django.contrib.auth.decorators import permission_required
-
+from django.shortcuts import render, redirect, get_object_or_404 # Agrega get_object_or_404 aquí
 #validar grupos a los que pertenece el usuario
 #esto seria lo mismo que el filtro en el frontend que se implemento en distribuidora/grupos.py
-def es_vendedor(user):
-    return user.groups.filter(name='Vendedor').exists()
-
+def es_vendedor_o_admin(user):
+    return user.is_superuser or user.groups.filter(name='Vendedor').exists()
 #CRUD
 #Aca empeiza Read
 
@@ -51,8 +48,10 @@ def ver_producto(request, pk):
 
 #Create
 #MI DECORADOR SERIA ESTE PARA QUE VERIFIQUE SI ES VENDEDOR
-@user_passes_test(es_vendedor)
+@user_passes_test(es_vendedor_o_admin)
 #este seria para comprar o añadir a lista de deseos
+#abajo le estoy diciendo que debe ser administrador o vendedor para crear productos
+@permission_required('apps.productos.add_producto', raise_exception=True) #lo ultimo devuelve al usuario a login en caso de error
 def crear_producto(request):   
     
     
@@ -67,8 +66,20 @@ def crear_producto(request):
         #get 
         form = ProductoForm()   
         return render(request, 'crear_producto.html', {'form': form})
+    
+@user_passes_test(es_vendedor_o_admin)
+def crear_categoria(request):
+    if request.method == 'POST':
+        form = CategoriaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('apps.productos:listar_productos')
+    else:
+        form = CategoriaForm()
+    return render(request, 'crear_categoria.html', {'form': form})
 
 #Update
+@user_passes_test(es_vendedor_o_admin)
 def editar_producto(request, pk):
     producto = Producto.objects.get(id_producto=pk)
     if request.method == 'POST':
@@ -85,11 +96,10 @@ def editar_producto(request, pk):
 
 
 #Delete 
-@permission_required('apps.productos.delete_producto', raise_exception=True) #lo ultimo devuelve al usuario a login en caso de error
+@user_passes_test(es_vendedor_o_admin)
 def eliminar_producto(request, pk):
-    producto = Producto.objects.get(id_producto=pk)
+    producto = get_object_or_404(Producto, id_producto=pk)
     if request.method == 'POST':
         producto.delete()
         return redirect('apps.productos:listar_productos')
-    else:
-        return render(request, 'eliminar_producto.html', {'producto': producto})
+    return render(request, 'eliminar_producto.html', {'producto': producto})

@@ -5,8 +5,10 @@
         {%if producto %}
         <ul>
             <li><a href="{% url 'apps.productos:listar_productos' %}">Volver</a></li>
-            <li><a href="{% url 'apps.productos:editar_producto' producto.pk %}">Editar</a></li>
-            <li><a href="{% url 'apps.productos:eliminar_producto' producto.pk %}">Eliminar</a></li>
+            {% if user.is_superuser or user|has_group:"Vendedor" %}
+                <li><a href="{% url 'apps.productos:editar_producto' producto.pk %}">Editar</a></li>
+                <li><a href="{% url 'apps.productos:eliminar_producto' producto.pk %}">Eliminar</a></li>
+            {% endif %}
         </ul>
         <hr>
         <h2>{{ producto.nombre }}</h2>

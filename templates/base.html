@@ -5,54 +5,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+
     <title>{% block title %}{% endblock %}</title>
+    <style>
+    /* Estilo para que el dropdown se abra al pasar el mouse */
+    .nav-item.dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0; 
+        }
+    </style>
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100 bg-light" >
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
     <header>
         <!--aqui arriba podria ir un logo o imagen -->
-        <nav>
-            <hr>
-            <ul>
-             
-            {% if user.is_staff %}
-                <li><a href="{% url 'admin:index' %}">Admin</a></li>
-            {% endif %}
-
-            <li><a href="{% url 'inicio' %}">Inicio</a></li>
-            <li><a href="{% url 'apps.productos:listar_productos' %}">Productos</a></li>
-
-
-            <!--permisos por grupos desde el frontend--> 
-            {%if user|has_group:"Vendedor" %}
-            <li><a href="{% url 'apps.productos:crear_producto'%}">Crear Productos</a></li>
-            {% endif %}
-            
-            {% if user.is_authenticated %}
-                <li style="display:flex; align-items:center; gap:8px;">
-                <img src="{{ user.imagen_perfil.url }}"
-                    style="width:32px; height:32px; border-radius:50%; object-fit:cover;">
-                <span>Hola, {{ user.username }}</span>
-                </li>
-                <li><a href="{% url 'apps.autenticacion:cerrar_sesion' %}">Cerrar Sesión</a></li>
-            {%else %}
-            <li><a href="{% url 'apps.autenticacion:registrar' %}">Registrar Usuario</a></li>
-            <li><a href="{% url 'apps.autenticacion:ingresar' %}">Iniciar Sesion</a></li>
-            {% endif %}
-            <!--<li><a href="">Servicios</a></li>
-            <li><a href=" ">Contacto</a></li> -->
-            </ul>
-            <hr>
-        </nav>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'inicio' %}">🛒 DISTRIBUIDORA</a>
+            <div class="collapse navbar-collapse">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'inicio' %}">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'apps.productos:listar_productos' %}">Productos</a></li>
+                    {#logica de permiso para ver crear#}
+                    {% if user.is_superuser or user|has_group:"Vendedor" %}
+                    <li class="nav-item dropdown">
+                     <a class="nav-link dropdown-toggle text-info" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      + Crear
+                      </a>
+                        <ul class="dropdown-menu dropdown-menu-dark shadow" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{% url 'apps.productos:crear_categoria' %}">Nueva Categoría</a></li>
+                            <li><a class="dropdown-item" href="{% url 'apps.productos:crear_producto' %}">Nuevo Producto</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning" href="{% url 'admin:index' %}" target="_blank">Admin</a>
+                    </li>
+                    {% endif %}
+                    
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <!---->
+                    {% if user.is_authenticated %}
+                        <li class="nav-item d-flex align-items-center">
+                            <span class="navbar-text me-3">Hola, <strong>{{ user.username }}</strong></span>
+                            <a class="btn btn-outline-danger btn-sm" href="{% url 'apps.autenticacion:cerrar_sesion' %}">Salir</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'apps.autenticacion:ingresar' %}">Ingresar</a></li>
+                        <li class="nav-item"><a class="btn btn-primary btn-sm ms-lg-2" href="{% url 'apps.autenticacion:registrar' %}">Registrarse</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
     </header>
     
-    <main>
-        {% block content %}
-        {% endblock %}
+    <main class="container my-5 p-4 bg-white shadow-sm rounded">
+        {% block content %}{% endblock %}
     </main>
 
-    <footer>
-        <hr>
-        <p>&copy; 2025 My Website</p>
+    <footer class="footer mt-auto py-3 bg-white border-top text-center">
+        <div class="container">
+            <span class="text-muted">&copy; 2026 Distribuidora - Gestión de Inventario</span>
+        </div>
     </footer>
+    
 </body>
 </html>

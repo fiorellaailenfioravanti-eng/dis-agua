@@ -1,23 +1,23 @@
 {% extends 'base.html' %}
-{% block title %}Crear Producto{% endblock %}
+{% block title %}Crear Categoría{% endblock %}
+
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-6">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
-                <h4 class="mb-0">Registrar Nuevo Producto</h4>
+                <h4 class="mb-0">Nueva Categoría</h4>
             </div>
             <div class="card-body p-4">
-                <form method="post" enctype="multipart/form-data">
+                <form method="post">
                     {% csrf_token %}
-                    <div class="row">
-                        {# Esto asume que usas widgets de Bootstrap en tu forms.py #}
+                    <div class="mb-3">
                         {{ form.as_p }}
                     </div>
                     <hr>
                     <div class="d-flex justify-content-end">
-                        <a href="{% url 'apps.productos:listar_productos' %}" class="btn btn-secondary me-2">Cancelar</a>
-                        <button type="submit" class="btn btn-success px-4">Guardar Producto</button>
+                        <a href="{% url 'apps.productos:listar_productos' %}" class="btn btn-secondary me-2">Volver</a>
+                        <button type="submit" class="btn btn-success">Guardar Categoría</button>
                     </div>
                 </form>
             </div>

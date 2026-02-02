@@ -10,9 +10,11 @@
                     <a href="{% url 'apps.productos:listar_productos' %}">Todas las categorías</a>
                 </li>
                 {% for e in categorias %}
-              
-                <li>{{ e.nombre }}  </li>
-                
+                <li>
+                    <a href="{% url 'apps.productos:listar_productos' %}?categoria={{ e.nombre }}">
+                     {{ e.nombre }}
+                    </a>
+                </li>
                 {% endfor %}
             </ul>
         </div>
