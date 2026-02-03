@@ -51,7 +51,7 @@ def ver_producto(request, pk):
 @user_passes_test(es_vendedor_o_admin)
 #este seria para comprar o añadir a lista de deseos
 #abajo le estoy diciendo que debe ser administrador o vendedor para crear productos
-@permission_required('apps.productos.add_producto', raise_exception=True) #lo ultimo devuelve al usuario a login en caso de error
+# @permission_required('apps.productos.add_producto', raise_exception=True) #lo ultimo devuelve al usuario a login en caso de error
 def crear_producto(request):   
     
     

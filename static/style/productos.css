@@ -39,3 +39,33 @@
     text-decoration: none;
     color: inherit;
 }
+
+/* Contenedor relativo para que el botón se posicione respecto a la tarjeta */
+.product-card-container {
+    position: relative;
+}
+
+/* Estilo del botón circular flotante */
+.btn-quick-add {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10; /* Asegura que esté por encima de la imagen */
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all 0.2s ease;
+    border: 1px solid #ddd;
+}
+
+.btn-quick-add:hover {
+    transform: scale(1.1);
+    background-color: #198754; /* Color success de Bootstrap */
+    color: white;
+    border-color: #198754;
+}

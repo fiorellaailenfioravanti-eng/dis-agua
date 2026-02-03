@@ -24,33 +24,35 @@
         <div class="col-md-9">
             <div class="row row-cols-1 row-cols-md-3 g-4">
                 {% for e in productos %}
-                <div class="col">
-                    <a href="{% url 'apps.productos:ver_producto' e.pk %}" class="card-link">
+                <div class="col product-card-container">
+                    <a href="{% url 'apps.carrito:agregar_al_carrito' e.id_producto %}" 
+                    class="btn btn-light shadow-sm btn-quick-add" 
+                    title="Añadir al carrito">
+                        <i class="fas fa-plus"></i>
+                    </a>
+
+                    <a href="{% url 'apps.productos:ver_producto' e.id_producto %}" class="card-link text-decoration-none text-dark">
                         <div class="card h-100 product-card shadow-sm">
-                            <div class="product-img-container">
+                            <div class="product-img-container text-center p-3">
                                 {% if e.imagen %}
-                                    <img src="{{ e.imagen.url }}" alt="{{ e.nombre }}">
-                                {%else%}
-                                <img src="{% static 'img/no-image.png' %}" alt="Sin imagen" class="img-fluid" style="height: 200px;">
+                                    <img src="{{ e.imagen.url }}" alt="{{ e.nombre }}" class="img-fluid" style="height: 200px; object-fit: contain;">
+                                {% else %}
+                                    <img src="{% static 'img/no-image.png' %}" alt="Sin imagen" class="img-fluid" style="height: 200px;">
                                 {% endif %}
                             </div>
                             <div class="card-body">
                                 <h5 class="card-title text-truncate">{{ e.nombre }}</h5>
-                                <p class="card-text text-muted small">{{ e.descripcion|truncatewords:10 }}</p>
+                                <p class="card-text text-muted small">{{ e.descripcion|truncatewords:8 }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="price-tag">${{ e.precio }}</span>
-                                    <span class="badge bg-secondary">Stock: {{ e.stock }}</span>
+                                    <span class="fw-bold fs-5">${{ e.precio }}</span>
+                                    <span class="badge bg-secondary opacity-75">Stock: {{ e.stock }}</span>
                                 </div>
                             </div>
-                            <div class="card-footer bg-transparent border-top-0 pb-3 text-center">
+                            <div class="card-footer bg-transparent border-top-0 pb-3">
                                 <span class="btn btn-outline-primary btn-sm w-100">Ver Detalles</span>
                             </div>
                         </div>
                     </a>
-                </div>
-                {% empty %}
-                <div class="col-12">
-                    <p class="alert alert-info">No se encontraron productos en esta sección.</p>
                 </div>
                 {% endfor %}
             </div>

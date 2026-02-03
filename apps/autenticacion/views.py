@@ -18,6 +18,9 @@ def registrar_usuario(request):
     return render(request, 'autenticacion/registrar.html', {'form': form})
 
 def ingresar_usuario(request):
+    next_url = request.GET.get('next')
+    if next_url and 'carrito' in next_url:
+        messages.info(request, "Debe ingresar para acceder al carrito.")
     if request.method == 'POST':
         form = IngresarUsuarioForm(request.POST)
         if form.is_valid():
