@@ -1,29 +1,60 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Listado de Productos{% endblock %}
 {% block content %}
-    <h1>Listado de Productos</h1>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Catálogo de Productos</h1>
+    </div>
 
-        <div>
-            <h2>Categorías</h2>
-            <ul>
-                <li>
-                    <a href="{% url 'apps.productos:listar_productos' %}">Todas las categorías</a>
-                </li>
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="list-group shadow-sm">
+                <a href="{% url 'apps.productos:listar_productos' %}" class="list-group-item list-group-item-action active">
+                    Todas las categorías
+                </a>
                 {% for e in categorias %}
-                <li>
-                    <a href="{% url 'apps.productos:listar_productos' %}?categoria={{ e.nombre }}">
-                     {{ e.nombre }}
-                    </a>
-                </li>
+                <a href="{% url 'apps.productos:listar_productos' %}?categoria={{ e.nombre }}" class="list-group-item list-group-item-action">
+                    {{ e.nombre }}
+                </a>
                 {% endfor %}
-            </ul>
+            </div>
         </div>
-        {% for e in productos %}
-        <hr>
-        <h2>{{ e.nombre }}</h2>
-        <p><strong>Precio:</strong> ${{ e.precio }}</p>
-        <a href="{% url 'apps.productos:ver_producto' e.pk %}">Ver detalles</a>
-        {% empty %}
-        <p>No hay productos disponibles.</p>
-        {% endfor %}
+
+        <div class="col-md-9">
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                {% for e in productos %}
+                <div class="col">
+                    <a href="{% url 'apps.productos:ver_producto' e.pk %}" class="card-link">
+                        <div class="card h-100 product-card shadow-sm">
+                            <div class="product-img-container">
+                                {% if e.imagen %}
+                                    <img src="{{ e.imagen.url }}" alt="{{ e.nombre }}">
+                                {%else%}
+                                <img src="{% static 'img/no-image.png' %}" alt="Sin imagen" class="img-fluid" style="height: 200px;">
+                                {% endif %}
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title text-truncate">{{ e.nombre }}</h5>
+                                <p class="card-text text-muted small">{{ e.descripcion|truncatewords:10 }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="price-tag">${{ e.precio }}</span>
+                                    <span class="badge bg-secondary">Stock: {{ e.stock }}</span>
+                                </div>
+                            </div>
+                            <div class="card-footer bg-transparent border-top-0 pb-3 text-center">
+                                <span class="btn btn-outline-primary btn-sm w-100">Ver Detalles</span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <p class="alert alert-info">No se encontraron productos en esta sección.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

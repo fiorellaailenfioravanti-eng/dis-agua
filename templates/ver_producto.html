@@ -1,32 +1,76 @@
 {% extends 'base.html' %}
-{% block title %}Ver Producto{% endblock %}
+{% load grupos %}
+{% load static %}
+{% block title %}Ver Producto: {{ producto.nombre }}{% endblock %}
 {% block content %}
-    <h1>Detalles del Producto</h1>
-        {%if producto %}
-        <ul>
-            <li><a href="{% url 'apps.productos:listar_productos' %}">Volver</a></li>
-            {% if user.is_superuser or user|has_group:"Vendedor" %}
-                <li><a href="{% url 'apps.productos:editar_producto' producto.pk %}">Editar</a></li>
-                <li><a href="{% url 'apps.productos:eliminar_producto' producto.pk %}">Eliminar</a></li>
-            {% endif %}
-        </ul>
-        <hr>
-        <h2>{{ producto.nombre }}</h2>
-        <p><strong>Descripción:</strong> {{ producto.descripcion }}</p> 
-        <p><strong>Precio:</strong> ${{ producto.precio }}</p>
-        <p><strong>Categorías:</strong> 
-        {% for cat in producto.categoria.all %}
-        {{ cat.nombre }}{% if not forloop.last %}, {% endif %}
-        {% empty %}
-        Sin categoría asignada
-        {% endfor %}
-        </p>
-        <p><strong>Cantidad en stock:</strong> {{ producto.stock }}</p>
-        <p><strong>Imagen:</strong> {% if producto.imagen %} <img src="{{ producto.imagen.url }}" alt="{{ producto.nombre }}" style="max-width: 200px;"> {% else %} No tiene imagen {% endif %} </p>
-        
-        {%else%}
-        <hr>
-        <p>Producto no encontrado.</p>
-        {%endif%}
+<div class="container py-5">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'inicio' %}">Inicio</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'apps.productos:listar_productos' %}">Productos</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ producto.nombre }}</li>
+        </ol>
+    </nav>
 
+    <div class="card border-0 shadow-lg overflow-hidden">
+        <div class="row g-0">
+            <div class="col-md-6 bg-white d-flex align-items-center justify-content-center p-4 border-end">
+                {% if producto.imagen %}
+                    <img src="{{ producto.imagen.url }}" class="img-fluid rounded" alt="{{ producto.nombre }}" style="max-height: 500px; object-fit: contain;">
+                {% else %}
+                    <img src="{% static 'img/no-image.png' %}" class="img-fluid opacity-50" alt="Sin imagen" style="max-height: 400px;">
+                {% endif %}
+            </div>
+
+            <div class="col-md-6 bg-light p-5">
+                <div class="mb-3">
+                    {% for cat in producto.categoria.all %}
+                        <span class="badge bg-primary text-uppercase px-3 py-2 mb-2">{{ cat.nombre }}</span>
+                    {% endfor %}
+                </div>
+                
+                <h1 class="display-5 fw-bold mb-3">{{ producto.nombre }}</h1>
+                
+                <div class="mb-4">
+                    <h2 class="text-success fw-bold display-6">$ {{ producto.precio }}</h2>
+                    <p class="text-muted small">Precio final con impuestos incluidos.</p>
+                </div>
+
+                <div class="mb-4">
+                    <h5 class="fw-bold">Descripción:</h5>
+                    <p class="text-secondary lh-lg">{{ producto.descripcion }}</p>
+                </div>
+
+                <div class="p-3 bg-white rounded border mb-4">
+                    <div class="d-flex align-items-center">
+                        <div class="me-3">
+                            <span class="fs-4">📦</span>
+                        </div>
+                        <div>
+                            <p class="mb-0 fw-bold text-dark">Stock Disponible:</p>
+                            <p class="mb-0 text-muted">{{ producto.stock }} unidades en depósito</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-5">
+                    <a href="{% url 'apps.productos:listar_productos' %}" class="btn btn-outline-secondary px-4 me-md-2">
+                        ← Volver al listado
+                    </a>
+                    
+                    {% if user.is_superuser or user|has_group:"Vendedor" %}
+                    <div class="btn-group shadow-sm" role="group">
+                        <a href="{% url 'apps.productos:editar_producto' producto.pk %}" class="btn btn-warning px-4">
+                            ✏️ Editar
+                        </a>
+                        <a href="{% url 'apps.productos:eliminar_producto' producto.pk %}" class="btn btn-danger px-4">
+                            🗑️ Eliminar
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

@@ -1,0 +1,41 @@
+/* Efecto de elevación al pasar el cursor sobre la tarjeta */
+.product-card {
+    transition: transform 0.3s ease, shadow 0.3s ease;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+/* Ajuste para que todas las imágenes de productos tengan el mismo tamaño */
+.product-img-container {
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    padding: 15px;
+}
+
+.product-img-container img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.price-tag {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333;
+}
+
+/* Quitar subrayado de los links que envuelven las cards */
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
