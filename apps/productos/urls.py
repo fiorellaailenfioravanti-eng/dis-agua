@@ -11,7 +11,7 @@ urlpatterns = [
 
     # R = Leer productos
     path('', listar_productos, name='listar_productos'),
-    path('produto/<int:pk>', ver_producto, name='ver_producto'),
+    path('producto/<int:pk>', ver_producto, name='ver_producto'),
 
     # U = Actualizar producto
     path('editar/<int:pk>', editar_producto, name='editar_producto'),

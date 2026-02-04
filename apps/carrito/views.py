@@ -13,17 +13,28 @@ def agregar_al_carrito(request, producto_id):
     carrito, _ = Carrito.objects.get_or_create(usuario=request.user)
     item_carrito, creado = ItemCarrito.objects.get_or_create(carrito=carrito, producto=producto)
 
-    if not creado:
-        item_carrito.cantidad += 1
-        item_carrito.save()
+    # Verificamos si la cantidad actual en el carrito + 1 supera el stock disponible
+    nueva_cantidad = item_carrito.cantidad + (0 if creado else 1)
     
-    # LÓGICA INTELIGENTE: Si viene de 'ver_producto', vuelve ahí. 
-    # Si no, vuelve al catálogo.
+    if producto.stock >= nueva_cantidad:
+        if not creado:
+            item_carrito.cantidad += 1
+            item_carrito.save()
+        messages.success(request, f"{producto.nombre} se añadió al carrito.")
+    else:
+        messages.error(request, f"Lo sentimos, no hay suficiente stock de {producto.nombre}. (Máximo: {producto.stock})")
+        # Si acababa de ser creado pero no hay stock, lo borramos
+        if creado:
+            item_carrito.delete()
+    
+    # Lógica de redireccionamiento inteligente que ya tenías
     referer = request.META.get('HTTP_REFERER')
-    if referer and 'ver_producto' in referer: # Ajusta 'ver_producto' a como sale en tu URL de detalle
+    if referer and 'producto' in referer:
         return redirect('apps.productos:ver_producto', pk=producto.id_producto)
-    messages.success(request, f"{producto.nombre} se añadió al carrito.")
     return redirect('apps.productos:listar_productos')
+    
+    
+    
 
 @login_required
 def ver_carrito(request):
@@ -39,8 +50,18 @@ def ver_carrito(request):
 def eliminar_del_carrito(request, item_id):
     carrito= get_object_or_404(Carrito, usuario=request.user)
     item = carrito.items.filter(id=item_id).first()
+   
     if item:
-        item.delete()
+        if item.cantidad > 1:
+            # Si hay más de uno, restamos 1 a la cantidad
+            item.cantidad -= 1
+            item.save()
+            messages.info(request, f"Se quitó una unidad de {item.producto.nombre}.")
+        else:
+            # Si solo queda uno, eliminamos el registro por completo
+            item.delete()
+            messages.warning(request, f"{item.producto.nombre} fue eliminado del carrito.")
+    
     return redirect('apps.carrito:ver_carrito')
 
 @login_required

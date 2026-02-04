@@ -45,7 +45,9 @@
                                 <p class="card-text text-muted small">{{ e.descripcion|truncatewords:8 }}</p>
                                 <div class="d-flex justify-content-between align-items-center">
                                     <span class="fw-bold fs-5">${{ e.precio }}</span>
-                                    <span class="badge bg-secondary opacity-75">Stock: {{ e.stock }}</span>
+                                    <span class="badge {% if e.stock < 5 %}bg-danger{% else %}bg-secondary{% endif %} opacity-75">
+                                        Stock: {{ e.stock }}
+                                    </span>
                                 </div>
                             </div>
                             <div class="card-footer bg-transparent border-top-0 pb-3">

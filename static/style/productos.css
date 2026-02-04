@@ -69,3 +69,36 @@
     color: white;
     border-color: #198754;
 }
+
+/* ESTILO DEL HEADERRRR */
+/* Estilo base para que el header tenga color desde el inicio */
+/* Si el usuario pone el modo claro, el header podría ser gris oscuro para no perder el contraste */
+[data-bs-theme="light"] header {
+    background-color: #2b3035 !important;
+}
+/* 1. Estilo base (SIEMPRE ARRIBA) */
+header {
+    transition: all 0.4s ease-in-out;
+    background-color: #212529 !important; /* Negro sólido inicial */
+    padding: 15px 0;
+    z-index: 1030;
+}
+
+/* Forzar que las letras sean blancas siempre */
+header .nav-link, 
+header .navbar-brand, 
+header .navbar-text,
+header .navbar-toggler-icon {
+    color: white !important;
+}
+
+/* 2. Estilo cuando baja (DEBE IR ABAJO PARA SOBREESCRIBIR) */
+header.navbar-scrolled {
+    padding: 2px 0 !important; /* Aquí es donde se achica */
+    background-color: #1a1d20 !important; /* Un poco más oscuro */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+header.navbar-scrolled .navbar-brand {
+    font-size: 0.95rem !important; /* Logo más pequeño */
+}
