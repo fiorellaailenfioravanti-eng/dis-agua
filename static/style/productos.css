@@ -1,3 +1,8 @@
+/*=======================================================
+CARDS DE PRODUCTOS
+========================================================*/
+
+
 /* Efecto de elevación al pasar el cursor sobre la tarjeta */
 .product-card {
     transition: transform 0.3s ease, shadow 0.3s ease;
@@ -70,7 +75,9 @@
     border-color: #198754;
 }
 
-/* ESTILO DEL HEADERRRR */
+/*=====================================================================
+ ESTILO DEL HEADERRRR 
+ ======================================================================*/
 /* Estilo base para que el header tenga color desde el inicio */
 /* Si el usuario pone el modo claro, el header podría ser gris oscuro para no perder el contraste */
 [data-bs-theme="light"] header {
@@ -101,4 +108,21 @@ header.navbar-scrolled {
 
 header.navbar-scrolled .navbar-brand {
     font-size: 0.95rem !important; /* Logo más pequeño */
+}
+header.navbar-scrolled {
+    background-color: #212529 !important; /* Negro sólido de Bootstrap */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5) !important;
+}
+
+
+
+/*=============================================================
+PARA EL NAV
+================================================================*/
+
+/* Agrega esto a productos.css */
+header .nav-link.active {
+    color: #0d6efd !important; /* Un color azul o el que prefieras para resaltar */
+    font-weight: bold;
+    border-bottom: 2px solid #0d6efd;
 }

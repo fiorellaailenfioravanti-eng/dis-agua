@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'apps.productos',
     'apps.autenticacion',
     'apps.carrito',
+    'apps.buscador',
 ]
 
 MIDDLEWARE = [

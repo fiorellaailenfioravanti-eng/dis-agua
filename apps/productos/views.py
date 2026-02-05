@@ -1,3 +1,6 @@
+from django.shortcuts import render, redirect
+#para hacer la paginación 
+from django.core.paginator import Paginator
 from .models import Producto, Categoria
 from .forms import ProductoForm, CategoriaForm
 #Decoradores para permisos (opcional)
@@ -17,13 +20,19 @@ def listar_productos(request):
     listar_productos = Producto.objects.all()
     #esto es para filtrar por categoria
     parametro_categoria = request.GET.get('categoria',"").strip()
+    #filtrar por categoria
     if parametro_categoria:
         listar_productos = listar_productos.filter(categoria__nombre__icontains=parametro_categoria)
 
+    paginator = Paginator(listar_productos, 6) # Mostrar 6 productos por página
+    page_number = request.GET.get('page') # Obtener el número de página de la solicitud
+    page_obj = paginator.get_page(page_number) # Obtener los productos para la página actual
+    
     #obtener todos los productos mediante contexto
     contexto = {
-        'productos': listar_productos,
-        'categorias': Categoria.objects.all()
+        'productos': page_obj,
+        'categorias': Categoria.objects.all(),
+        'categoria_actual': parametro_categoria # Útil para mantener el filtro en los links
     }
     return render(request, 'listar_productos.html', contexto)
 # Create your views here.

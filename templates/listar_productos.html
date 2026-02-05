@@ -60,5 +60,48 @@
             </div>
         </div>
     </div>
+    
 </div>
+<!-- Paginación -->
+    <nav aria-label="Paginación de productos" class="mt-5">
+        <ul class="pagination justify-content-center shadow-sm">
+        {% if productos.has_previous %}
+            <li class="page-item">
+                 <a class="page-link border-0 text-dark" href="?page=1{% if categoria_actual %}&categoria={{ categoria_actual }}{% endif %}">
+                    <i class="fas fa-angle-double-left"></i>
+                    </a>
+            </li>
+                    <li class="page-item">
+                        <a class="page-link border-0 text-dark" href="?page={{ productos.previous_page_number }}{% if categoria_actual %}&categoria={{ categoria_actual }}{% endif %}">
+                            Anterior
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% for num in productos.paginator.page_range %}
+                    {% if productos.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link bg-primary border-0 text-white">{{ num }}</span>
+                        </li>
+                    {% elif num > productos.number|add:'-3' and num < productos.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link border-0 text-dark" href="?page={{ num }}{% if categoria_actual %}&categoria={{ categoria_actual }}{% endif %}">{{ num }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if productos.has_next %}
+                    <li class="page-item">
+                        <a class="page-link border-0 text-dark" href="?page={{ productos.next_page_number }}{% if categoria_actual %}&categoria={{ categoria_actual }}{% endif %}">
+                            Siguiente
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link border-0 text-dark" href="?page={{ productos.paginator.num_pages }}{% if categoria_actual %}&categoria={{ categoria_actual }}{% endif %}">
+                            <i class="fas fa-angle-double-right"></i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+    </nav>
 {% endblock %}
