@@ -34,7 +34,7 @@ def listar_productos(request):
         'categorias': Categoria.objects.all(),
         'categoria_actual': parametro_categoria # Útil para mantener el filtro en los links
     }
-    return render(request, 'listar_productos.html', contexto)
+    return render(request, 'productos/listar_productos.html', contexto)
 # Create your views here.
 
 
@@ -46,10 +46,10 @@ def ver_producto(request, pk):
         contexto = {
             'producto': producto
         }
-        return render(request, 'ver_producto.html', contexto)
+        return render(request, 'productos/ver_producto.html', contexto)
     
     except Producto.DoesNotExist:
-        return render(request, 'ver_producto.html', {'producto': None})
+        return render(request, 'productos/ver_producto.html', {'producto': None})
 
 #Aca termina Read   
     
@@ -74,7 +74,7 @@ def crear_producto(request):
     else:
         #get 
         form = ProductoForm()   
-        return render(request, 'crear_producto.html', {'form': form})
+        return render(request, 'productos/crear_producto.html', {'form': form})
     
 @user_passes_test(es_vendedor_o_admin)
 def crear_categoria(request):
@@ -85,7 +85,7 @@ def crear_categoria(request):
             return redirect('apps.productos:listar_productos')
     else:
         form = CategoriaForm()
-    return render(request, 'crear_categoria.html', {'form': form})
+    return render(request, 'productos/crear_categoria.html', {'form': form})
 
 #Update
 @user_passes_test(es_vendedor_o_admin)
@@ -98,7 +98,7 @@ def editar_producto(request, pk):
             return redirect('apps.productos:listar_productos')
     else:
         form = ProductoForm(instance=producto)
-        return render(request, 'editar_producto.html', {'form': form, 'producto': producto})
+        return render(request, 'productos/editar_producto.html', {'form': form, 'producto': producto})
 
 
 
@@ -111,4 +111,4 @@ def eliminar_producto(request, pk):
     if request.method == 'POST':
         producto.delete()
         return redirect('apps.productos:listar_productos')
-    return render(request, 'eliminar_producto.html', {'producto': producto})
+    return render(request, 'productos/eliminar_producto.html', {'producto': producto})
