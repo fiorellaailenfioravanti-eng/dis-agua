@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, decorators
+from django.contrib.auth.decorators import login_required
 from .forms import RegistroUsuarioForm, IngresarUsuarioForm
 
 # Create your views here.
@@ -41,3 +42,8 @@ def cerrar_sesion(request):
     logout(request)
     messages.success(request, 'Sesión cerrada exitosamente.')
     return redirect('apps.autenticacion:ingresar')
+
+@login_required
+def perfil_usuario(request):
+    return render(request, 'autenticacion/perfil.html')
+

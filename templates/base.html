@@ -45,7 +45,10 @@
              
             <div class="collapse navbar-collapse order-4 order-lg-3 w-100 w-lg-auto" id="navbarPF">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item"><a class="nav-link {% if request.resolver_match.view_name == '' %}active{% endif %}" href="{% url 'inicio' %}">Inicio</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.resolver_match.view_name == 'inicio' %}active{% endif %}" 
+                        href="{% url 'inicio' %}">Inicio</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link {% if request.resolver_match.view_name == 'apps.productos:listar_productos' %}active{% endif %}" 
                         href="{% url 'apps.productos:listar_productos' %}">Productos</a>
@@ -111,6 +114,7 @@
         </div>
     </nav>
     </header>
+    {% block content_banner %}{% endblock content_banner %}
     <!-- Mensajes -->
     {% if messages %}
         <div class="container mt-3">
@@ -129,6 +133,9 @@
         {% block content %}{% endblock %}
     </main>
 
+
+    {% block content_footer %}
+    {% endblock content_footer %}
     <footer class="footer mt-auto py-3 bg-body border-top text-center">
         <div class="container">
             <span class="text-muted">&copy; 2026 Distribuidora - Gestión de Inventario</span>

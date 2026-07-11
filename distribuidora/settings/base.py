@@ -121,3 +121,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'autenticacion.Usuario'  # Modelo de usuario personalizado
 LOGIN_URL = '/auth/ingresar/'  # Ajusta al name que tengas en auth/urls.py
+LOGIN_REDIRECT_URL = '/'  # Redirige al inicio después de iniciar sesión
+LOGOUT_REDIRECT_URL = '/auth/ingresar/'  # Redirige al inicio de sesión después de cerrar sesión
